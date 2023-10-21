@@ -1,6 +1,8 @@
 # Worker Pool
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/arjunsk/workerpool/workerpool.svg)](https://pkg.go.dev/github.com/arjunsk/workerpool)
 [![Go Report Card](https://goreportcard.com/badge/github.com/arjunsk/workerpool)](https://goreportcard.com/report/github.com/arjunsk/workerpool)
+[![Codecov](https://codecov.io/gh/arjunsk/workerpool/branch/master/graph/badge.svg)](https://codecov.io/gh/arjunsk/workerpool)
 
 > This library is a fork of Dirk Pahl's [kyoo](https://github.com/dirkaholic/kyoo). 
 > I have added more comments and refactored a little for better understandability.
