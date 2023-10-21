@@ -1,3 +1,7 @@
-coverage.out
-examples/httpserver/httpserver
-examples/sqsworker/sqsworker
+*.iml
+*.ipr
+*.iws
+.idea/
+/build/
+/dist/
+/out/

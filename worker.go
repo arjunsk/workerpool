@@ -1,46 +1,44 @@
-package jobqueue
+package workerpool
 
 import (
 	"sync"
 )
 
-// Worker - the worker threads that actually process the jobs
+// Worker is responsible for executing the work. There could be many workers in a worker pool.
 type Worker struct {
-	done             *sync.WaitGroup
-	readyPool        chan chan Job
-	assignedJobQueue chan Job
-
-	quit chan bool
+	wg               *sync.WaitGroup
+	workerCh         chan Work
+	freeWorkerPoolCh chan chan Work
+	stopCh           chan bool
 }
 
-// NewWorker creates a new worker
-func NewWorker(readyPool chan chan Job, done *sync.WaitGroup) *Worker {
+func NewWorker(freeWorkerPoolCh chan chan Work, wg *sync.WaitGroup) *Worker {
 	return &Worker{
-		done:             done,
-		readyPool:        readyPool,
-		assignedJobQueue: make(chan Job),
-		quit:             make(chan bool),
+		wg:               wg,
+		workerCh:         make(chan Work),
+		freeWorkerPoolCh: freeWorkerPoolCh,
+		stopCh:           make(chan bool),
 	}
 }
 
-// Start - begins the job processing loop for the worker
 func (w *Worker) Start() {
+	w.wg.Add(1)
 	go func() {
-		w.done.Add(1)
 		for {
-			w.readyPool <- w.assignedJobQueue // check the job queue in
+			// Add workerCh back to freeWorkerPoolCh when it is not doing any work (ie completed the old work).
+			w.freeWorkerPoolCh <- w.workerCh
+
 			select {
-			case job := <-w.assignedJobQueue: // see if anything has been assigned to the queue
-				job.Process()
-			case <-w.quit:
-				w.done.Done()
+			case work := <-w.workerCh:
+				work()
+			case <-w.stopCh:
+				w.wg.Done()
 				return
 			}
 		}
 	}()
 }
 
-// Stop stops the worker
 func (w *Worker) Stop() {
-	w.quit <- true
+	w.stopCh <- true
 }
