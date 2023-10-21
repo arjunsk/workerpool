@@ -1,7 +1,5 @@
 # Worker Pool
 
-![Build](https://gitlab.com/arjunsk/workerpool/badges/master/pipeline.svg) 
-![Coverage](https://gitlab.com/arjunsk/workerpool/badges/master/coverage.svg) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/arjunsk/workerpool)](https://goreportcard.com/report/github.com/arjunsk/workerpool)
 
 > This library is a fork of Dirk Pahl's [kyoo](https://github.com/dirkaholic/kyoo). 
